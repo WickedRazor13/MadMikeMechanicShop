@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Express.js Vehicle API
+  version: 1.0.0
+paths:
+  /vehicles:
+    get:
+      summary: Get all vehicles
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+
+    post:
+      summary: Create a new vehicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '201':
+          description: Vehicle created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '500':
+          description: Internal server error
+
+  /vehicles/VIN:
+    get:
+      summary: Get vehicle by VIN
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+
+  /vehicles/id:
+    get:
+      summary: Get vehicle by id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+    put:
+      summary: Update vehicle by id
+      requestBody:
+        required: true
+        content:
+          application/jason:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '201':
+          description: Vehicle updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Deletes vehicle by id
+      responses:
+        '200':
+          description:  Vehicle was deleted
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        VIN:
+          type: string
+        Make:
+          type: string
+        Model:
+          type: string
+        Year:
+          type: integer
+        Plate Number:
+          type: string
+        Plate State:
+          type: string
+        Owner:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+        Job:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    Customer:
+      type: object
+      properties:
+        Name:
+          type: string
+        Address:
+          type: string
+        DL Number:
+          type: string
+    Job:
+      type: object
+      properties:
+        Description:
+          type: string
+          description: Description of problem with vehicle
+          example: Could be the alternator
+        Accepted Date:
+          type: string
+          example: 5/5/2023
+        Completed Date:
+          type: string
+          example: 5/6/2023
+        Employee:
+          type: string
+
+
