@@ -54,7 +54,7 @@ app.get('/vehicles/:id', (req, res) => {
 app.post('/vehicles', (req, res) => {
   const body = req.body
   console.log(body);
-  db.collection('vehicles').insertOne(body).then((docs) => {
+  db.collection('vehicles').insertOne(body).then(()=> {
     res.status(201).send({success: true});
   }).catch(err => {
     console.error('Failed to insert vehicle to MongoDB:', err);
@@ -62,19 +62,20 @@ app.post('/vehicles', (req, res) => {
   })
 });
 
-app.put('vehicles/:id', (req, res) => {
-    const body = req.body
-    //TODO Work on this method
-    db.collection('vehicles').findOneAndUpdate(req.params.id, {
-        VIN: req.body.VIN
-    });
-    res.status(201).send({success: true});
-})
+app.put('/vehicles/:id', (req, res) => {
+    const body = req.body;
+    db.collection('vehicles').updateOne({_id:new ObjectId(req.params.id)}, {$set: body}).then(() => {
+        res.status(200).send({success: true});
+    }).catch(err => {
+        console.error('Failed to update document from MongoDB:', err);
+        res.status(500).send('Internal Server Error');
+    })
+});
 
 app.delete('/vehicles/:id', (req, res) => {
 
     if (ObjectId.isValid(req.params.id)) {
-        db.collection('vehicles').deleteOne({_id: new ObjectId(req.params.id)}).then((doc) => {
+        db.collection('vehicles').deleteOne({_id: new ObjectId(req.params.id)}).then(() => {
             res.status(200).send({success: true});
         }).catch(err => {
             console.error('Failed to find document from MongoDB:', err);

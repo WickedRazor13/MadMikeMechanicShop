@@ -14,5 +14,5 @@ Content-Type: application/json
   "city": "Boston",
   "country": "USA",
 
-  ""
+  "VIN": "1234"
 }
