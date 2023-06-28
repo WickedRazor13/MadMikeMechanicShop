@@ -1,11 +1,12 @@
-# Example Node/Express RESTFul Server
+# CS 453 Project 1
+Zachary Armistead
 
 ## Running
 This server consists of a simple node.js server with a set of routes for customers
 GET /customers - fetch all customers
 POST /customers - create a new customer
 
-You can see how its structure in the customers.yaml openapi 3.0 spec. 
+You can see how its structure in the vehicles.yaml openapi 3.0 spec. 
 
 To run, 
 ```shell

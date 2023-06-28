@@ -17,15 +17,7 @@ async function dbConnect() {
   const client = await MongoClient.connect(uri);
   console.log('Connected to MongoDB');
   db = await client.db('mydatabase');
-  /*const result = await db.collection('vehicles').insertOne(
-    {
-        Make: 'scion',
-        Model: 'xB',
-    }
-  );
-  console.log(result);*/
 }
-
 
 // Define a route handler for the root path
 app.get('/vehicles', (req, res) => {
@@ -37,20 +29,6 @@ app.get('/vehicles', (req, res) => {
     })
 });
 
-app.get('/vehicles/:id', (req, res) => {
-
-    if (ObjectId.isValid(req.params.id)) {
-        db.collection('vehicles').findOne({_id: new ObjectId(req.params.id)}).then((doc) => {
-            res.json(doc);
-        }).catch(err => {
-            console.error('Failed to fetch document from MongoDB:', err);
-            res.status(500).send('Internal Server Error');
-        })
-    } else {
-        res.status(500).json({error: 'Not valid ID'});
-    }
-});
-
 app.post('/vehicles', (req, res) => {
   const body = req.body
   console.log(body);
@@ -60,6 +38,38 @@ app.post('/vehicles', (req, res) => {
     console.error('Failed to insert vehicle to MongoDB:', err);
     res.status(500).send('Internal Server Error');
   })
+});
+
+app.get('/vehicles/:key', (req, res) => {
+    // Check if key is an object id first before passing to generic find
+    if (ObjectId.isValid(req.params.key)) {
+        db.collection('vehicles').findOne({_id: new ObjectId(req.params.key)}).then((doc) => {
+            res.json(doc);
+        }).catch(err => {
+            console.error('Failed to fetch document from MongoDB:', err);
+            res.status(500).send('Internal Server Error');
+        })
+    } else {    // Generic find
+        db.collection('vehicles').find(
+            {
+                "$or":[
+                    {VIN:{$regex:req.params.key}},
+                    {Make:{$regex:req.params.key}},
+                    {Model:{$regex:req.params.key}},
+                    {Year:{$regex:req.params.key}},
+                    {PlateNumber:{$regex:req.params.key}},
+                    {PlateState:{$regex:req.params.key}},
+                    {"Customer.LastName":req.params.key},
+                    {"Customer.DLNumber":req.params.key},
+                    {Shop:req.params.key}
+                ]
+            }
+        ).toArray().then((docs) => {
+            res.status(200).json(docs);
+        }).catch(err => {
+            res.status(400).send('Bad Request');
+        });
+    }
 });
 
 app.put('/vehicles/:id', (req, res) => {

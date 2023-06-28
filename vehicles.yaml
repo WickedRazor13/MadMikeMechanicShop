@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Express.js Vehicle API
+  title: Mad Mike's Mechanic Shop Express.js Vehicle API
   version: 1.0.0
 paths:
   /vehicles:
@@ -13,6 +13,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Vehicle'
+        '500':
+          description: Internal server error
 
     post:
       summary: Create a new vehicle
@@ -35,9 +37,60 @@ paths:
         '500':
           description: Internal server error
 
-  /vehicles/VIN:
+  /vehicles/{param}:
     get:
-      summary: Get vehicle by VIN
+      summary: Get vehicle(s) by parameter (Make, model, VIN, etc..)
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            type: number
+          description: Object ID of the vehicle to get
+        - in: path
+          name: VIN
+          schema:
+            type: string
+          description: VIN of the vehicle to get
+        - in: path
+          name: Make
+          schema:
+            type: string
+          description: Make of the vehicle(s) to get
+        - in: path
+          name: Model
+          schema:
+            type: string
+          description: Make of the vehicle(s) to get
+        - in: path
+          name: Year
+          schema:
+            type: integer
+          description: Year of the vehicle(s) to get
+        - in: path
+          name: Plate Number
+          schema:
+            type: string
+          description: License plate number of the vehicle to get
+        - in: path
+          name: Plate State
+          schema:
+            type: string
+          description: State of a vehicle's registration
+        - in: path
+          name: Customer Last Name
+          schema:
+            type: string
+          description: Name of the customer
+        - in: path
+          name: DL Number
+          schema:
+            type: string
+          description: Customer driver's license number
+        - in: path
+          name: Shop
+          schema:
+            type: integer
+          description: Mad Mike's shop number
       responses:
         '200':
           description: Successful response
@@ -45,21 +98,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Vehicle'
-
-  /vehicles/id:
-    get:
-      summary: Get vehicle by id
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
     put:
       summary: Update vehicle by id
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            type: number
+          description: Object ID of the vehicle to update
       requestBody:
         required: true
+        description: For PUT operation, not all fields need to be filled out. Only those listed in the request body will be updated.
         content:
           application/jason:
             schema:
@@ -78,10 +131,11 @@ paths:
           description: Internal server error
 
     delete:
-      summary: Deletes vehicle by id
+      summary: Deletes vehicle by key value (id, VIN, Plate Number)
       responses:
         '200':
           description:  Vehicle was deleted
+
 
 components:
   schemas:
@@ -90,47 +144,76 @@ components:
       properties:
         VIN:
           type: string
+          description: VIN of the customer's vehicle
+          example: 123456789
         Make:
           type: string
+          description: Customer's vehicle make
+          example: Scion
         Model:
           type: string
+          description: Customer's vehicle model
+          example: xB
         Year:
           type: integer
-        Plate Number:
+          description: Vehicle year
+          example: 2009
+        PlateNumber:
           type: string
-        Plate State:
+          description: License plate number
+          example: H3LL0
+        PlateState:
           type: string
-        Owner:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-        Job:
-          type: array
-          items:
-            $ref: '#/components/schemas/Job'
-    Customer:
-      type: object
-      properties:
-        Name:
-          type: string
-        Address:
-          type: string
-        DL Number:
-          type: string
-    Job:
-      type: object
-      properties:
-        Description:
+          description: Vehicle's state of registration
+          example: Alabama
+
+        Customer:
+          type: object
+          properties:
+            FirstName:
+              type: string
+              description: Customer's first name
+              example: Zach
+            LastName:
+              type: string
+              description: Customer's last name
+              example: Armistead
+            DLNumber:
+              type: string
+              description: Customer driver's license number
+              example: 8742556
+            Address:
+              type: object
+              properties:
+                Street:
+                  type: string
+                  description: Customer street address
+                  example: 1234 Street Rd
+                City:
+                  type: string
+                  description: Customer's city of residence
+                  example: Huntsville
+                Zip:
+                  type: integer
+                  description: Customer's zip code
+                  example: 35803
+        Problem:
           type: string
           description: Description of problem with vehicle
           example: Could be the alternator
-        Accepted Date:
+        Shop:
+          type: integer
+          description: Mad Mike's Shop Number
+          example: 48
+        AcceptDate:
           type: string
+          description: Date the vehicle arrived at the shop
           example: 5/5/2023
-        Completed Date:
+        CompleteDate:
           type: string
+          description: Date the vehicle left the shop
           example: 5/6/2023
         Employee:
           type: string
-
-
+          description: Employee who worked on the vehicle
+          example: Jared Dines

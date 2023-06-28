@@ -9,10 +9,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "Bob Frong",
-  "age": 29,
-  "city": "Boston",
-  "country": "USA",
+  "VIN": "1234",
 
-  "VIN": "1234"
 }
