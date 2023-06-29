@@ -13,6 +13,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: No vehicles found
         '500':
           description: Internal server error
 
@@ -103,13 +105,23 @@ paths:
         '500':
           description: Internal server error
     put:
-      summary: Update vehicle by id
+      summary: Update vehicle by parameter (id, VIN, Plate Number)
       parameters:
         - in: path
           name: _id
           schema:
             type: number
           description: Object ID of the vehicle to update
+        - in: path
+          name: VIN
+          schema:
+            type: string
+          description: VIN of the vehicle to update
+        - in: path
+          name: Plate Number
+          schema:
+            type: string
+          description: License plate number of the vehicle to update
       requestBody:
         required: true
         description: For PUT operation, not all fields need to be filled out. Only those listed in the request body will be updated.
@@ -131,7 +143,23 @@ paths:
           description: Internal server error
 
     delete:
-      summary: Deletes vehicle by key value (id, VIN, Plate Number)
+      summary: Deletes vehicle by parameter (id, VIN, Plate Number)
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            type: number
+          description: Object ID of the vehicle to delete
+        - in: path
+          name: VIN
+          schema:
+            type: string
+          description: VIN of the vehicle to delete
+        - in: path
+          name: Plate Number
+          schema:
+            type: string
+          description: License plate number of the vehicle to delete
       responses:
         '200':
           description:  Vehicle was deleted

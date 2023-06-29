@@ -22,7 +22,10 @@ async function dbConnect() {
 // Define a route handler for the root path
 app.get('/vehicles', (req, res) => {
     db.collection('vehicles').find().toArray().then((docs) => {
-      res.json(docs);
+        if (docs.length === 0) {
+            res.status(400).send('No vehicles found');
+        }
+        else {res.status(200).json(docs);}
     }).catch(err => {
       console.error('Failed to fetch documents from MongoDB:', err);
       res.status(500).send('Internal Server Error');
@@ -65,34 +68,67 @@ app.get('/vehicles/:key', (req, res) => {
                 ]
             }
         ).toArray().then((docs) => {
-            res.status(200).json(docs);
+            if (docs.length === 0) {
+                res.status(400).send('Bad Request');
+            }
+            else {res.status(200).json(docs);}
         }).catch(err => {
-            res.status(400).send('Bad Request');
+            console.error('Failed to find requested vehicle in MongoDB:', err);
+            res.status(500).send('Internal Server Error');
         });
     }
 });
 
-app.put('/vehicles/:id', (req, res) => {
+app.put('/vehicles/:key', (req, res) => {
     const body = req.body;
-    db.collection('vehicles').updateOne({_id:new ObjectId(req.params.id)}, {$set: body}).then(() => {
-        res.status(200).send({success: true});
-    }).catch(err => {
-        console.error('Failed to update document from MongoDB:', err);
-        res.status(500).send('Internal Server Error');
-    })
-});
 
-app.delete('/vehicles/:id', (req, res) => {
-
-    if (ObjectId.isValid(req.params.id)) {
-        db.collection('vehicles').deleteOne({_id: new ObjectId(req.params.id)}).then(() => {
+    // Check if key is an object id first before passing to generic find
+    if (ObjectId.isValid(req.params.key)) {
+        db.collection('vehicles').updateOne({_id: new ObjectId(req.params.key)}, {$set:body}).then(() => {
             res.status(200).send({success: true});
         }).catch(err => {
-            console.error('Failed to find document from MongoDB:', err);
+            console.error('Failed to fetch document from MongoDB:', err);
             res.status(500).send('Internal Server Error');
         })
-    } else {
-        res.status(500).json({error: 'Not valid ID'});
+    } else {    // Generic find
+        db.collection('vehicles').updateOne(
+            {
+                "$or":[
+                    {VIN:{$regex:req.params.key}},
+                    {PlateNumber:{$regex:req.params.key}},
+                ]
+            }
+        , {$set:body}).then(() => {
+            res.status(200).send({success: true});
+        }).catch(err => {
+            console.error('Failed to update vehicle in MongoDB:', err);
+            res.status(500).send('Internal Server Error');
+        });
+    }
+});
+
+app.delete('/vehicles/:key', (req, res) => {
+    // Check if key is an object id first before passing to generic find
+    if (ObjectId.isValid(req.params.key)) {
+        db.collection('vehicles').deleteOne({_id: new ObjectId(req.params.key)}).then(() => {
+            res.status(200).send({success: true});
+        }).catch(err => {
+            console.error('Failed to fetch document from MongoDB:', err);
+            res.status(500).send('Internal Server Error');
+        })
+    } else {    // Generic find
+        db.collection('vehicles').deleteOne(
+            {
+                "$or":[
+                    {VIN:{$regex:req.params.key}},
+                    {PlateNumber:{$regex:req.params.key}},
+                ]
+            }).then(() => {
+            res.status(200).send({success: true});
+        }).catch(err => {
+            console.error('Failed to update vehicle in MongoDB:', err);
+            res.status(500).send('Internal Server Error');
+        });
     }
 });
 
@@ -103,3 +139,7 @@ app.listen(3000, () => {
   });
 });
 
+//TODO make test requests in test.http
+//TODO launch on nebula to determine installation instructions
+//TODO document README (pre requisite docker for install)
+//TODO get screenshots of functional curl, postman, wget, and http calls
