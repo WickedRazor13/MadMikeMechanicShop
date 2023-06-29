@@ -9,7 +9,7 @@ Content-Type: application/json
   "VIN":"987654321",
   "Make":"Honda",
   "Model":"Accord",
-  "Year":2018,
+  "Year":"2018",
   "PlateNumber":"Y33T",
   "PlateState":"Alabama",
   "Customer": {

@@ -8,7 +8,7 @@ curl -X POST --location "http://localhost:3000/vehicles" \
             \"VIN\": \"123456789\",
             \"Make\": \"Scion\",
             \"Model\": \"xB\",
-            \"Year\": 2009,
+            \"Year\": \"2009\",
             \"PlateNumber\": \"H3LL0\",
             \"PlateState\": \"Alabama\",
             \"Customer\": {
@@ -28,34 +28,36 @@ curl -X POST --location "http://localhost:3000/vehicles" \
             \"Employee\": \"Jared Dines\"
         }"
 
-curl -X GET --location "http://localhost:3000/vehicles"
+echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/123456789"
+curl -X GET --location "http://localhost:3000/vehicles"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/Scion"
+curl -X GET --location "http://localhost:3000/vehicles/123456789"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/xB"
+curl -X GET --location "http://localhost:3000/vehicles/Scion"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/2009"
+curl -X GET --location "http://localhost:3000/vehicles/xB"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/H3LL0"
+curl -X GET --location "http://localhost:3000/vehicles/2009"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/Alabama"
+curl -X GET --location "http://localhost:3000/vehicles/H3LL0"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/Armistead"
+curl -X GET --location "http://localhost:3000/vehicles/Alabama"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles/85432"
+curl -X GET --location "http://localhost:3000/vehicles/Armistead"; echo -e '\n'
+
+curl -X GET --location "http://localhost:3000/vehicles/85432"; echo -e '\n'
 
 curl -X PUT --location "http://localhost:3000/vehicles/123456789" \
      -H "Accept: application/json" \
      -H "Content-Type: application/json" \
-     -d "{ \"Year\": 2010 }"
+     -d "{ \"Year\": \"2010\" }"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles"
+curl -X GET --location "http://localhost:3000/vehicles"; echo -e '\n'
 
-curl -X DELETE --location "http://localhost:3000/vehicles/H3LL0"
+curl -X DELETE --location "http://localhost:3000/vehicles/H3LL0"; echo -e '\n'
 
-curl -X GET --location "http://localhost:3000/vehicles"
+curl -X GET --location "http://localhost:3000/vehicles"; echo -e '\n'
 
 
 # WGET testing

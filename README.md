@@ -2,107 +2,81 @@
 Zachary Armistead
 
 ## Running
-This server consists of a simple node.js server with a set of routes for customers
-GET /customers - fetch all customers
-POST /customers - create a new customer
+This server supplies the basic routes for Mad Mike's Mechanic Shop
 
-You can see how its structure in the vehicles.yaml openapi 3.0 spec. 
+GET /vehicles - fetch all vehicles
+
+POST /vehicles - create a new vehicle
+
+GET /vehicles/{param} - fetch specific vehicle(s) based on parameter
+
+PUT /vehicles/{param} - update specific vehicle based on parameter
+
+DELETE /vehicles/{param} - delete specific vehicle based on parameter
+
+You can see how it's structured in the vehicles.yaml openapi 3.0 spec. 
 
 To run, 
+
 ```shell
 docker-compose build 
 ```
-this will express image and pull the mongo image if need be. 
+this will pull the express image and pull the mongo image if need be. 
 ```shell
 docker-compose up
 ```
 This will start the two containers (express app & mongo)
 
-To make sure its working got to [http://localhost:3000/customers](http://localhost:3000/customers)
+To make sure its working got to [http://localhost:3000/vehicles](http://localhost:3000/vehicles)
 
-You can creat a new customer with curl 
+You can creat a new vehicle with curl 
 ```shell
-curl -X POST --location "http://localhost:3000/customers" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -d "{
-          \"name\": \"Bob Frog\",
-          \"age\": 29,
-          \"city\": \"Boston\",
-          \"country\": \"USA\"
+curl -X POST --location "http://localhost:3000/vehicles" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d "{
+            \"VIN\": \"123456789\",
+            \"Make\": \"Scion\",
+            \"Model\": \"xB\",
+            \"Year\": \"2009\",
+            \"PlateNumber\": \"H3LL0\",
+            \"PlateState\": \"Alabama\",
+            \"Customer\": {
+              \"FirstName\": \"Zach\",
+              \"LastName\":\"Armistead\",
+              \"DLNumber\":\"85432\",
+              \"Address\": {
+                \"Street\": \"123 Street Rd\",
+                \"City\": \"Huntsville\",
+                \"Zip\": 35802
+              }
+            },
+            \"Problem\": \"Could be the alternator\",
+            \"Shop\": 40,
+            \"AcceptDate\":\"6/27/2023\",
+            \"CompleteDate\":\"6/29/2023\",
+            \"Employee\": \"Jared Dines\"
         }"
 ```
 
-And to fetch customers
+And to fetch vehicles
 ```shell
-curl -X GET --location "http://localhost:3000/customers"
+curl -X GET --location "http://localhost:3000/vehicles"
 ```
 
 To close the containers, you can hit ctrl^c in the terminal you started it in or 
 ```shell
 docker-compose down -v 
 ```
-## Express explanation
+## Project Explanation
 
-The express server is fairly simple to setup
-```javascript
-// Import & create the express app
-const express = require('express');
-const app = express();
-// Parses json as middleware 
-app.use(express.json())
+With the container running, the following files can be used to test functionality of the Mad Mike's Mechanic Shop API:
 
-// Get a list of customers
-app.get('/customers', (req, res) => {
-  db.collection('customers').find().toArray().then((docs) => {
-    res.json(docs);
-  }).catch(err => {
-    console.error('Failed to fetch documents from MongoDB:', err);
-    res.status(500).send('Internal Server Error');
-  })
-});
+_**[curl_test.sh](curl_test.sh)**_ will run curl request tests for all routes with all possible parameters.
 
-// Create a new customer
-app.post('/customers', (req, res) => {
-  const body = req.body
-  console.log(body);
-  db.collection('customers').insertOne(body).then((docs) => {
-    res.status(201).send({success: true});
-  }).catch(err => {
-    console.error('Failed to insert customer to MongoDB:', err);
-    res.status(500).send('Internal Server Error');
-  })
-});
+_**[wget_test.sh](wget_test.sh)**_ will run a POST and GET request and save the responses in _**response1.json**_ and **_response2.json_** respectively
 
-// Once the DB is connected the server will start
-app.listen(3000, () => {
-  dbConnect().then (() => {
-    console.log('Server is running on port 3000');
-  });
-});
-```
+_**[test.http](test.http)**_ has the http requests I used for testing. I ran the tests individually from the file in my IDE.
 
-Setting up the DB connection is also fairly straightforward if you understand promises
-```javascript
-const { MongoClient } = require('mongodb');
-const uri = 'mongodb://mongo:27017/mydatabase';
-
-// Connects to the DB docker image (mongo)
-// then inserts dummy data into the Customer Collection, in case you don't have one.
-async function dbConnect() {
-// Connect to MongoDB
-  const client = await MongoClient.connect(uri);
-  console.log('Connected to MongoDB');
-  db = await client.db('mydatabase');
-  const result = await db.collection('customers').insertOne(
-    {
-      name: 'John Doe',
-      age: 30,
-      city: 'New York',
-      country: 'USA',
-    }
-  );
-  console.log(result);
-}
-```
+_**[Project 1.postman_collection.json](Project%201.postman_collection.json)**_ can be imported into Postman to load more requests used for testing.
 

@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "d1acc43a-00a3-4c9a-9b35-8a35019d80f3",
+		"name": "Project 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28145605"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/vehicles",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"VIN\":\"00000000\",\r\n    \"Make\":\"Kia\",\r\n    \"Model\":\"Soul\",\r\n    \"Year\": 2017,\r\n    \"PlateNumber\":\"R0KNSTN\",\r\n    \"PlateState\":\"Alabama\",\r\n    \"Customer\": {\r\n            \"FirstName\":\"William\",\r\n            \"LastName\":\"Armistead\",\r\n            \"DLNumber\":\"97345\",\r\n            \"Address\": {\r\n                \"Street\":\"123 Broken Dream Blvd\",\r\n                \"City\":\"Huntsville\",\r\n                \"Zip\":35802\r\n            }\r\n        },\r\n    \"Problem\":\"Could be the alternator\",\r\n    \"Shop\":42,\r\n    \"AcceptDate\":\"6/27/2023\",\r\n    \"CompleteDate\":\"7/1/2023\",\r\n    \"Employee\":\"Jared Dines\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/vehicles",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET by LP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/vehicles/R0KNSTN",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles",
+						"R0KNSTN"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT by LP",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"PlateState\":\"California\"\r\n}\r\n  ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/vehicles/R0KNSTN",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles",
+						"R0KNSTN"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE by LP",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"PlateState\":\"California\"\r\n}\r\n  ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/vehicles/R0KNSTN",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles",
+						"R0KNSTN"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/vehicles/R0KNSTN",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles",
+						"R0KNSTN"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

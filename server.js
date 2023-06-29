@@ -126,7 +126,7 @@ app.delete('/vehicles/:key', (req, res) => {
             }).then(() => {
             res.status(200).send({success: true});
         }).catch(err => {
-            console.error('Failed to update vehicle in MongoDB:', err);
+            console.error('Failed to fetch vehicle in MongoDB:', err);
             res.status(500).send('Internal Server Error');
         });
     }
@@ -139,7 +139,7 @@ app.listen(3000, () => {
   });
 });
 
-//TODO make test requests in test.http
+
 //TODO launch on nebula to determine installation instructions
 //TODO document README (pre requisite docker for install)
 //TODO get screenshots of functional curl, postman, wget, and http calls
