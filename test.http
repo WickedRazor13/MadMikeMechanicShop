@@ -1,14 +1,83 @@
 GET http://localhost:3000/vehicles
 
 ###
-GET http://localhost:3000/vehicles/6494e3ae7ddbe1c7bc2ed064
-
-###
 POST http://localhost:3000/vehicles
 Accept: application/json
 Content-Type: application/json
 
 {
-  "VIN": "1234",
-
+  "VIN":"987654321",
+  "Make":"Honda",
+  "Model":"Accord",
+  "Year":2018,
+  "PlateNumber":"Y33T",
+  "PlateState":"Alabama",
+  "Customer": {
+    "FirstName":"Michelle",
+    "LastName":"Armistead",
+    "DLNumber":"87317",
+    "Address": {
+      "Street":"246 Street Rd",
+      "City":"Huntsville",
+      "Zip":35802
+    }
+  },
+  "Problem":"Could be the alternator",
+  "Shop":39,
+  "AcceptDate":"6/27/2023",
+  "CompleteDate":"7/1/2023",
+  "Employee":"Stevie T"
 }
+
+###
+GET http://localhost:3000/vehicles/987654321
+
+###
+GET http://localhost:3000/vehicles/Honda
+
+###
+GET http://localhost:3000/vehicles/Accord
+
+###
+GET http://localhost:3000/vehicles/2018
+
+###
+GET http://localhost:3000/vehicles/Y33T
+
+###
+GET http://localhost:3000/vehicles/Alabama
+
+###
+GET http://localhost:3000/vehicles/Armistead
+
+###
+GET http://localhost:3000/vehicles/87317
+
+###
+PUT http://localhost:3000/vehicles/Y33T
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Year":"2016",
+  "Problem":"It's probably the alternator"
+}
+
+###
+PUT http://localhost:3000/vehicles/987654321
+Accept: application/json
+Content-Type: application/json
+
+{
+  "PlateState":"Florida",
+  "Customer": {
+    "Address": {
+      "Street":"246 Road Rd",
+      "City":"Orlando",
+      "Zip":"32707"
+    }
+  }
+}
+
+###
+DELETE http://localhost:3000/vehicles/Y33T
