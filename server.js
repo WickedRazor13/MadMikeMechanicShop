@@ -47,7 +47,7 @@ app.get('/vehicles/:key', (req, res) => {
     // Check if key is an object id first before passing to generic find
     if (ObjectId.isValid(req.params.key)) {
         db.collection('vehicles').findOne({_id: new ObjectId(req.params.key)}).then((doc) => {
-            res.json(doc);
+            res.status(200).json(doc);
         }).catch(err => {
             console.error('Failed to fetch document from MongoDB:', err);
             res.status(500).send('Internal Server Error');
