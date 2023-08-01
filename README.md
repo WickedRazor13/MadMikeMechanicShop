@@ -97,3 +97,7 @@ _**[test.http](test.http)**_ has the http requests I used for testing. I ran the
 
 _**[Project 1.postman_collection.json](Project%201.postman_collection.json)**_ can be imported into Postman to load a request template.
 
+## New for Project 2 
+
+_**[soap_test.sh](soap_test.sh)**_ will execute a curl call for testing the soap/wsdl functionality. The returned price and delivery date are hard-coded values.
+
